@@ -1,0 +1,137 @@
+#include <mysql.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+
+	MYSQL *conn;
+	int err;
+	// Estructura especial para almacenar resultados de consultas 
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	//Creamos una conexion al servidor MYSQL 
+	conn = mysql_init(NULL);
+	if (conn==NULL) {
+		printf ("Error al crear la conexion: %u %s\n", 
+				mysql_errno(conn), mysql_error(conn));
+		exit (1);
+	}
+	//inicializar la conexion
+	conn = mysql_real_connect (conn, "localhost","root", "mysql", "Juego",0, NULL, 0);
+	if (conn==NULL) {
+		printf ("Error al inicializar la conexion: %u %s\n", 
+				mysql_errno(conn), mysql_error(conn));
+		exit (1);
+	}
+
+	strcpy (consulta,"SELECT Partida.id FROM Partida WHERE Partida.dur = (SELECT MAX(Partida.dur) FROM Partida);");
+	err=mysql_query (conn, consulta);
+	if (err!=0) {
+		printf ("Error al consultar datos de la base %u %s\n",
+				mysql_errno(conn), mysql_error(conn));
+		exit (1);
+	}
+
+	//recogemos el resultado de la consulta
+	resultado = mysql_store_result(conn); // El resultado de la consulta se devuelve en una variable del tipo puntero a MYSQL_RES. Se trata de una 		tabla virtual en memoria que es la copia de la tabla real en disco.
+	row = mysql_fetch_row (resultado);	// Ahora obtenemos la primera fila que se almacena en una variable de tipo MYSQL_ROW.
+	printf("\tConsulta realizada con exito\n");
+	
+	if (row == NULL){		
+		printf ("No se han obtenido datos en la consulta\n");
+		strcpy(respuesta, "NO");
+	}
+	else{
+		printf ("La partida que mas ha durado, tiene el siguiente id: %s\n", row[0]);
+	}
+	mysql_close (conn);
+	exit(0);
+	
+	/*if (codigo == 1){ //LOG IN
+	printf("\tEntramos en la consulta de Log In (consulta == 1)\n");
+	
+	strcpy(consulta, "SELECT pwd FROM JUGADOR WHERE JUGADOR.nombre : ");
+	strcat(consulta, nombre);
+	strcat(consulta," ");
+	printf ("\tLa consulta que realizamos es: %s\n", consulta); 
+	
+	//hacemos la consulta
+	err=mysql_query(conn, consulta);
+	if(err!=0){
+		printf("Error al consultar datos de la base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit(1);
+	}
+	
+	//recogemos el resultado de la consulta
+	resultado = mysql_store_result(conn); // El resultado de la consulta se devuelve en una variable del tipo puntero a MYSQL_RES. Se trata de una tabla virtual en memoria que es la copia de la tabla real en disco.
+	row = mysql_fetch_row (resultado); // Ahora obtenemos la primera fila que se almacena en una variable de tipo MYSQL_ROW.
+	
+	if (row == NULL){		
+		printf ("No se han obtenido datos en la consulta\n");
+		strcpy(respuesta, "NO");
+	}
+	else{
+		while (row !=NULL) {
+			printf ("\tHemos obtenido la contraseña\n");
+			// la columna 0 contiene el nombre del jugador
+			printf ("%s\n", row[0]);
+			// obtenemos la siguiente fila
+			row = mysql_fetch_row (resultado);
+			printf("\tConsulta realizada con exito\n");
+	}	
+	mysql_close (conn);
+	exit(0);
+
+
+	if (codigo == 2){ //REGISTER
+	printf("\tEntramos en Register, (consulta == 2)\n");
+	
+	char pwd [30];
+	char nombre [30];
+	
+	strcpy(consulta, "SELECT id FROM JUGADOR WHERE JUGADOR.nombre : ");
+	strcat(consulta, nombre);
+	strcat(consulta," ");
+	printf ("\tLa consulta que enviamos es: %s\n", consulta);
+	
+	//hacemos la consulta
+	err=mysql_query (conn, consulta);
+	if (err!=0) {
+		printf ("Error al consultar datos de la base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit (1);
+	}
+	
+	//recogemos el resultado de la consulta
+	resultado = mysql_store_result(conn); // El resultado de la consulta se devuelve en una variable del tipo puntero a MYSQL_RES. Se trata de una tabla virtual en memoria que es la copia de la tabla real en disco.
+	row = mysql_fetch_row (resultado); // Ahora obtenemos la primera fila que se almacena en una variable de tipo MYSQL_ROW.
+	
+	if (row == NULL){
+		printf("\tIncluimos usuario no registrado\n"); 
+		p = strtok (NULL, "/");
+		strcpy(pwd, p);
+		strcpy(consulta, "INSERT INTO JUGADOR (nombre, pwd) VALUES (");
+		strcat(consulta, nombre);
+		strcat(consulta, ", ");
+		strcat(consulta, pwd);
+		strcat(consulta, ")");
+		
+		printf ("\tLa consulta que realizamos es: %s\n", consulta);
+		//hacemos la consulta
+		err=mysql_query(conn, consulta);
+		if(err!=0){
+			printf("\tError al consultar datos de la base %u %s\n", mysql_errno(conn), mysql_error(conn)"\tUsuario no registrado\n");
+			sprintf(respuesta, "NO");
+			exit(1);
+		}
+		else
+		printf("\tUsuario registrado con exito\n\t}\n");
+		sprintf(respuesta, "REGISTRADO");
+	}
+	else
+	{
+		printf ("\tYa existe un usuario con ese username, eliga otro\n");
+		sprintf(respuesta, "NO");
+	}*/
+}
