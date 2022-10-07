@@ -5,14 +5,14 @@ CREATE DATABASE Juego;
 USE Juego;
 
 CREATE TABLE JUGADOR (
-        nombre TEXT NOT NULL, /*NOT NULL -> no puede contener valores nulos*/
-        pwd TEXT NOT NULL,
+        nombre VARCHAR (20) TEXT NOT NULL, /*NOT NULL -> no puede contener valores nulos*/
+        pwd VARCHAR (10) TEXT NOT NULL,
         id INTEGER PRIMARY KEY NOT NULL /*INTEGER PRIMARY KEY NOT NULL -> identifica de manera única cada fila de una tabla*/
  )ENGINE = InnoDB;
 
 CREATE TABLE PARTIDA (
-        ganador INTEGER,
-        duracion FLOAT,
+        ganador VARCHAR (30),
+        duracion VARCHAR (10),
         data_temps DATETIME,
         id INTEGER PRIMARY KEY NOT NULL
  )ENGINE = InnoDB;
@@ -23,15 +23,6 @@ CREATE TABLE PARTICIPACION (
         FOREIGN KEY (JUGADOR) REFERENCES JUGADOR(id),
         FOREIGN KEY (PARTIDA) REFERENCES PARTIDA(id)
  )ENGINE = InnoDB;
-
-/*CREATE TABLE CONNECTAR (
-	socket INT NOT NULL, //socket -> punto final en una connexion
-	id_P INT NOT NULL,
-	id_C INT AUTO_INCREMENT,
-	id_C INTEGER PRIMARY KEY NOT NULL,
-	FOREIGN KEY (id_P) REFERENCES JUGADOR (id) //FOREIGN KEY -> columna/as que sirven para señalar cual es la clave primaria de otra tabla
-)ENGINE = InnoDB;*/
-
 
 INSERT INTO JUGADOR (nombre, pwd, id) VALUES ('Alex', '5382',1);
 INSERT INTO JUGADOR (nombre, pwd, id) VALUES ('Taha', '2904',2);
@@ -52,5 +43,3 @@ INSERT INTO PARTICIPACION VALUES (3,2);
 INSERT INTO PARTICIPACION VALUES (3,3);
 
 SELECT PARTIDA.id FROM PARTIDA WHERE PARTIDA.duracion = (SELECT MAX(PARTIDA.duracion) FROM PARTIDA;
-
-/*SELECT pwd FROM JUGADOR WHERE JUGADOR.nombre;
