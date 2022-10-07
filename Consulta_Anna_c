@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 		exit (1);
 	}
 
-	strcpy (consulta,"SELECT Partida.id FROM Partida WHERE Partida.dur = (SELECT MAX(Partida.dur) FROM Partida);");
+	strcpy (consulta,"SELECT PARTIDA.id FROM PARTIDA WHERE PARTIDA.duracion = (SELECT MAX(PARTIDA.duracion) FROM PARTIDA);");
 	err=mysql_query (conn, consulta);
 	if (err!=0) {
 		printf ("Error al consultar datos de la base %u %s\n",
